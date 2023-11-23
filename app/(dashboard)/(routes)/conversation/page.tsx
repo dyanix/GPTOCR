@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import ImageToTextConverter from './ImageToTextConverter';
 
 import axios from "axios";
 import { Empty } from "@/components/ui/empty";
@@ -95,8 +96,9 @@ const ConversationPage = () => {
                 )}
               />
               <Button className="col-span-12 lg:col-span-2 w-full" disabled={isLoading}>Generate</Button>
+             
             </form>
-
+            <ImageToTextConverter />
           </Form>
         </div>
         <div className="space-y-4 mt-4">
