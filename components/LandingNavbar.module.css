@@ -1,0 +1,17 @@
+/* LandingNavbar.module.css */
+
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.1); 
+    backdrop-filter: blur(10px); 
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    width: 100%; /* Set the width to 100% */
+    position: fixed;
+    top: 0; 
+    z-index: 1000;
+    box-sizing: border-box;
+    border-radius: 10px;
+    left: 0; /* Ensure the navbar starts from the left edge */
+    right: 0; /* Ensure the navbar ends at the right edge */
+    margin: 0 auto; /* Center the navbar horizontally */
+}
