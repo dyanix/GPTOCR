@@ -27,6 +27,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BotAvatar } from "@/components/bot-avatar";
 import { UserAvatar } from "@/components/user-avatar";
+import { toast } from "react-hot-toast";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface UserMessage {
   role: "user";
@@ -34,6 +36,7 @@ interface UserMessage {
 }
 const ConversationPage = () => {
   const router = useRouter();
+  const proModal = useProModal();
   const [messages, setMessages] = useState<UserMessage[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,6 +51,8 @@ const ConversationPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const userMessage: UserMessage = { role: "user", content: values.prompt };
+      // const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
+
       const newMessages = [...messages, userMessage];
 
       const response = await axios.post('/api/conversation', { messages: newMessages });
@@ -55,11 +60,11 @@ const ConversationPage = () => {
 
       form.reset();
     } catch (error: any) {
-      //   if (error?.response?.status === 403) {
-      //     proModal.onOpen();
-      //   } else {
-      //     toast.error("Something went wrong.");
-      //   }
+        if (error?.response?.status === 403) {
+          proModal.onOpen();
+        } else {
+          toast.error("Something went wrong.");
+        }
     } finally {
       router.refresh();
     }

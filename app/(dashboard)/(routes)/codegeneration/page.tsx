@@ -29,6 +29,8 @@ import { Button } from "@/components/ui/button";
 import { BotAvatar } from "@/components/bot-avatar";
 import { UserAvatar } from "@/components/user-avatar";
 import ReactMarkdown from "react-markdown"
+import { toast } from "react-hot-toast";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface UserMessage {
   role: "user";

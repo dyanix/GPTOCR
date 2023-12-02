@@ -3,11 +3,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { Montserrat } from "next/font/google"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, MessageSquare, CodeIcon, FolderKanban  } from "lucide-react";
+import { LayoutDashboard, MessageSquare, CodeIcon, FolderKanban, SettingsIcon  } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { FreeCounter } from "./free-counter";
 const montserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 
-const routes = [
+export const routes = [
     {
         label: "Dashboard",
         icon: LayoutDashboard,
@@ -26,12 +27,26 @@ const routes = [
         href: "/codegeneration",
         color: "text-pink-500"
     },
+    {
+        label: "Settings",
+        icon: SettingsIcon,
+        href: "/settings",
+        color: "text-white-500"
+    },
    
 ]
-const Sidebar = () => {
+
+export const Sidebar = ({
+    apiLimitCount = 0,
+    isPro=false
+}:{
+    apiLimitCount: number;
+    isPro:boolean
+}) => {
     const pathname = usePathname();
 
     return (
+        <>
         <div className="space-y-4 py-4 flex-col h-full bg-[#111827] text-white">
             <div className="px-3 py-2 flex-1">
                 <Link href="/dashboard" className="flex items-center pl-3 mb-4">
@@ -63,9 +78,13 @@ const Sidebar = () => {
                 </div>
 
             </div>
+            <FreeCounter
+        apiLimitCount={apiLimitCount} 
+        isPro={isPro}
+      />
         </div>
+    </>
     )
 }
 
 
-export default Sidebar;
