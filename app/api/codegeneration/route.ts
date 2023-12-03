@@ -1,7 +1,8 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import Configuration from "openai"
-import { ChatCompletionRequestMessage, OpenAIApi } from "openai";
+// import { ChatCompletionRequestMessage } from "openai";
+import OpenAI from "openai";
 
 import { checkSubscription } from "@/lib/subscription";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
@@ -9,8 +10,13 @@ import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+interface ChatCompletionRequestMessage {
+  role: string;
+  content: string;
+  // Add other properties as needed based on the actual structure
+}
 
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI();
 
 const instructionMessage: ChatCompletionRequestMessage = {
   role: "system",
@@ -47,7 +53,7 @@ export async function POST(
     if (!freeTrial ) {
       return new NextResponse("Free trial has expired. Please upgrade to pro.", { status: 403 });
     }
-    const response = await openai.createChatCompletion({
+    const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [instructionMessage, ...messages]
     });
@@ -57,7 +63,7 @@ export async function POST(
     }
 
     // await incrementApiLimit();
-    return NextResponse.json(response.data.choices[0].message);
+    return NextResponse.json(response.choices[0].message);
   } catch (error) {
     console.log('[CODE_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });
